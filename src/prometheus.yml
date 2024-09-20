@@ -1,0 +1,36 @@
+global:
+  # Define o intervalo de tempo entre as coletas de métricas (15 segundos neste caso)
+  scrape_interval: 15s
+
+scrape_configs:
+
+  # ## Supabase PostgreSQL Exporter ##
+
+  # job_name: Define o nome do job para identificar a fonte de métricas
+  - job_name: 'supabase_postgres'
+
+    # static_configs: Lista de configurações para targets estáticos
+    static_configs:
+      # targets: Lista de endereços dos targets a serem coletados
+      - targets: ['localhost:9187']  # Altere para o endereço do seu exporter Supabase PostgreSQL
+
+  # ## ClickHouse scraping direto (sem exporter) ##
+
+  # job_name: Define o nome do job para identificar a fonte de métricas
+  - job_name: 'clickhouse_direct'
+
+    # metrics_path: Caminho para a consulta que recupera métricas do ClickHouse
+    metrics_path: '/?query=SELECT%20*%20FROM%20system.metrics%20FORMAT%20JSONEachRow'
+
+    # static_configs: Lista de configurações para targets estáticos
+    static_configs:
+      # targets: Lista de endereços dos targets a serem coletados
+      - targets: ['uhrjdiptqu.us-east-1.aws.clickhouse.cloud:8443']  # Altere para o endereço do seu ClickHouse
+
+    # scheme: Define o esquema de comunicação (https neste caso)
+    scheme: 'https'
+
+    # basic_auth: Autenticação básica para o ClickHouse (se necessário)
+    basic_auth:
+      username: 'default'
+      password: '~x.C7Lba1nwpF'  # Altere as credenciais se necessário (oculte a senha real)
